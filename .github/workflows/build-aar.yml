@@ -21,7 +21,7 @@ jobs:
         env:
           CGO_ENABLED: 1
         run: |
-          go mod tidy
+          go get -tool golang.org/x/mobile/cmd/gobind
           gomobile bind -tags nosqlite -ldflags="-w -s -checklinkname=0" -o libgopeed.aar -target=android/arm64 -androidapi 21 -javapkg="com.gopeed" ://github.com
       - uses: actions/upload-artifact@v4
         with:

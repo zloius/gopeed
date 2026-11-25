@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: GopeedLab/gopeed  # 直接拉取原仓库代码，无需在自己仓库同步 Tag
+          repository: GopeedLab/gopeed
           ref: v1.9.3
       - uses: actions/setup-go@v5
         with:
@@ -25,7 +25,7 @@ jobs:
           CGO_ENABLED: 1
         run: |
           go get -tool golang.org/x/mobile/cmd/gobind
-          gomobile bind -tags nosqlite -ldflags="-w -s -checklinkname=0" -o libgopeed.aar -target=android/arm64 -androidapi 21 -javapkg="com.gopeed" ://github.com
+          gomobile bind -tags nosqlite -ldflags="-w -s -checklinkname=0" -o libgopeed.aar -target=android/arm64 -androidapi 21 -javapkg="com.gopeed" ./bind/mobile
       - uses: actions/upload-artifact@v4
         with:
           name: libgopeed-aar

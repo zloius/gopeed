@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          repository: GopeedLab/gopeed  # 直接拉取原仓库代码，无需在自己仓库同步 Tag
           ref: v1.9.3
       - uses: actions/setup-go@v5
         with:

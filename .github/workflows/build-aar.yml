@@ -10,16 +10,19 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25'
-      - uses: android-actions/setup-android@v3
       - name: Setup NDK & gomobile
         run: |
-          sdkmanager --install "ndk;26.3.11579264"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;26.3.11579264"
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.3.11579264" >> $GITHUB_ENV
           go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
           gomobile init
       - name: Build AAR
+        env:
+          CGO_ENABLED: 1
         run: |
-          gomobile bind -tags nosqlite -ldflags="-w -s -checklinkname=0" -javapkg="com.gopeed" -target=android/arm64 -androidapi 21 -o libgopeed.aar ./bind/mobile
+          go mod tidy
+          gomobile bind -tags nosqlite -ldflags="-w -s -checklinkname=0" -o libgopeed.aar -target=android/arm64 -androidapi 21 -javapkg="com.gopeed" ://github.com
       - uses: actions/upload-artifact@v4
         with:
           name: libgopeed-aar
